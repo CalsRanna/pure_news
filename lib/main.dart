@@ -13,7 +13,9 @@ class PureNewsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var themeData = ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Color.fromRGBO(48, 52, 64, 1),
+      ),
     );
     return MaterialApp.router(
       routerConfig: pureNewsRouter.config(),

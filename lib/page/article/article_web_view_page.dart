@@ -31,9 +31,10 @@ class _ArticleWebViewPageState extends State<ArticleWebViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    var uri = Uri.parse(widget.article.originHtmlUrl);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.article.originHtmlUrl),
+        title: Text(uri.host, style: Theme.of(context).textTheme.bodyMedium),
         leading: TextButton(
           onPressed: () => AutoRouter.of(context).maybePop(),
           child: Text('关闭'),
