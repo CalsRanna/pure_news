@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pure_news/route/route.dart';
 
 class DialogUtil {
@@ -45,14 +46,10 @@ class _LoadingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var boxDecoration = BoxDecoration(
-      borderRadius: BorderRadius.circular(12),
-      color: Theme.of(context).colorScheme.surface,
-    );
-    var container = Container(
-      decoration: boxDecoration,
-      padding: EdgeInsets.all(32),
-      child: const CircularProgressIndicator.adaptive(),
+    var container = SizedBox(
+      height: 120,
+      width: 120,
+      child: Lottie.asset('asset/json/loading.json'),
     );
     return UnconstrainedBox(child: container);
   }
