@@ -46,11 +46,12 @@ class _LoadingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var container = SizedBox(
+    var lottie = Lottie.asset(
+      'asset/json/loading.json',
+      fit: BoxFit.cover,
       height: 120,
       width: 120,
-      child: Lottie.asset('asset/json/loading.json'),
     );
-    return UnconstrainedBox(child: container);
+    return UnconstrainedBox(child: lottie);
   }
 }
