@@ -13,17 +13,30 @@ class FeedViewModel extends ViewModel {
   var subscriptions = signal(<Subscription>[]);
   var articles = signal(<Article>[]);
 
-  Future<void> getSubscriptions() async {
+  Future<void> _getSubscriptions() async {
+    subscriptions.value = await _service.getSubscriptions();
+  }
+
+  Future<void> _getArticles() async {
+    List<Article> unsortedArticles = [];
+    for (var subscription in subscriptions.value) {
+      var items = await _service.getArticles(subscription);
+      unsortedArticles.addAll(items);
+    }
+    unsortedArticles.sort((a, b) => b.published.compareTo(a.published));
+    articles.value = unsortedArticles;
+  }
+
+  Future<void> refreshSubscriptions() async {
+    await _getSubscriptions();
+    await _getArticles();
+  }
+
+  Future<void> initSubscriptions() async {
     try {
       DialogUtil.loading();
-      subscriptions.value = await _service.getSubscriptions();
-      List<Article> unsortedArticles = [];
-      for (var subscription in subscriptions.value) {
-        var items = await _service.getArticles(subscription);
-        unsortedArticles.addAll(items);
-      }
-      unsortedArticles.sort((a, b) => b.published.compareTo(a.published));
-      articles.value = unsortedArticles;
+      await _getSubscriptions();
+      await _getArticles();
       DialogUtil.dismiss();
     } catch (error) {
       DialogUtil.dismiss();
