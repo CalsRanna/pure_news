@@ -3,6 +3,7 @@ import 'package:pure_news/view_model/article_view_model.dart';
 import 'package:pure_news/view_model/article_web_view_view_model.dart';
 import 'package:pure_news/view_model/bootstrap_view_model.dart';
 import 'package:pure_news/view_model/feed_view_model.dart';
+import 'package:pure_news/view_model/profile_view_model.dart';
 import 'package:pure_news/view_model/sign_in_endpoint_view_model.dart';
 import 'package:pure_news/view_model/sign_in_password_view_model.dart';
 import 'package:pure_news/view_model/sign_in_username_view_model.dart';
@@ -27,6 +28,9 @@ class DependencyInjection {
     );
     GetIt.instance.registerLazySingleton<ArticleWebViewViewModel>(
       () => ArticleWebViewViewModel(),
+    );
+    GetIt.instance.registerLazySingleton<ProfileViewModel>(
+      () => ProfileViewModel(),
     );
   }
 }

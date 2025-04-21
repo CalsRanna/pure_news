@@ -48,6 +48,10 @@ class FeedViewModel extends ViewModel {
     AutoRouter.of(context).push(ArticleRoute(article: article));
   }
 
+  void pushProfilePage(BuildContext context) {
+    AutoRouter.of(context).push(ProfileRoute());
+  }
+
   Subscription? getSubscriptionByArticle(Article article) {
     return subscriptions.value
         .where((subscription) => subscription.id == article.originStreamId)

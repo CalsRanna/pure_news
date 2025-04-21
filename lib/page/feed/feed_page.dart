@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pure_news/database/article.dart';
 import 'package:pure_news/page/feed/component/article_tile.dart';
 import 'package:pure_news/view_model/feed_view_model.dart';
 import 'package:signals/signals_flutter.dart';
@@ -22,7 +21,7 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     var iconButton = IconButton(
-      onPressed: () {},
+      onPressed: () => viewModel.pushProfilePage(context),
       icon: Icon(HugeIcons.strokeRoundedUserList),
     );
     var appBar = AppBar(
@@ -58,7 +57,7 @@ class _FeedPageState extends State<FeedPage> {
     var article = viewModel.articles.value[index];
     return ArticleTile(
       article: article,
-      onTap: () => _pushArticlePage(article),
+      onTap: () => viewModel.pushArticlePage(context, article),
       subscription: viewModel.getSubscriptionByArticle(article),
     );
   }
@@ -89,9 +88,5 @@ class _FeedPageState extends State<FeedPage> {
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Divider(color: Theme.of(context).colorScheme.surfaceContainerHigh),
     );
-  }
-
-  void _pushArticlePage(Article article) {
-    viewModel.pushArticlePage(context, article);
   }
 }

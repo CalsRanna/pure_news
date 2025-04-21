@@ -19,5 +19,6 @@ class PureNewsRouter extends RootStackRouter {
     AutoRoute(page: FeedRoute.page),
     AutoRoute(page: ArticleRoute.page),
     AutoRoute(page: ArticleWebViewRoute.page),
+    AutoRoute(page: ProfileRoute.page),
   ];
 }
