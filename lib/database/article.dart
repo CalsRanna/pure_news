@@ -27,22 +27,4 @@ class Article {
       summaryContent = summary['content'];
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{};
-    json['id'] = id;
-    json['published'] = published;
-    json['title'] = title;
-    json['canonicalHref'] = canonicalHref;
-    json['originStreamId'] = originStreamId;
-    json['originHtmlUrl'] = originHtmlUrl;
-    json['originTitle'] = originTitle;
-    json['summaryContent'] = summaryContent;
-    return json;
-  }
-
-  @override
-  String toString() {
-    return 'Article${toJson()}';
-  }
 }
