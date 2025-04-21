@@ -18,7 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('个人设置')),
+      appBar: AppBar(centerTitle: false, title: Text('个人设置')),
       body: Watch((context) {
         var wrap = Wrap(
           alignment: WrapAlignment.start,
