@@ -17,7 +17,11 @@ class ArticleWebViewViewModel extends ViewModel {
 
   void initController() {
     controller.setNavigationDelegate(
-      NavigationDelegate(onPageFinished: (_) => loading.value = false),
+      NavigationDelegate(
+        onHttpError: (_) => loading.value = false,
+        onPageFinished: (_) => loading.value = false,
+        onWebResourceError: (_) => loading.value = false,
+      ),
     );
   }
 

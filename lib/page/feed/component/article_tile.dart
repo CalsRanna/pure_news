@@ -165,7 +165,10 @@ class _ArticleTileState extends State<ArticleTile> {
       child: icon,
     );
     var cachedNetworkImage = CachedNetworkImage(
-      imageUrl: widget.subscription?.iconUrl ?? '',
+      imageUrl: (widget.subscription?.iconUrl ?? '').replaceAll(
+        '43.139.61.244',
+        '43.139.61.244:8080',
+      ),
       fit: BoxFit.cover,
       height: 40,
       width: 40,

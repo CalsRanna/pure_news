@@ -57,7 +57,7 @@ class _ArticleWebViewPageState extends State<ArticleWebViewPage> {
     );
     var children = [
       WebViewWidget(controller: viewModel.controller),
-      if (viewModel.loading.value) Center(child: lottie),
+      if (viewModel.loading.value) AbsorbPointer(child: Center(child: lottie)),
     ];
     return Stack(children: children);
   }
