@@ -78,7 +78,7 @@ class _ArticlePageState extends State<ArticlePage> {
   }
 
   Html _buildContent() {
-    var htmlStyle = Style(padding: HtmlPaddings.zero, margin: Margins.zero);
+    var aStyle = Style(textDecoration: TextDecoration.none);
     var bodyStyle = Style(
       padding: HtmlPaddings.symmetric(horizontal: 16),
       margin: Margins.zero,
@@ -90,7 +90,7 @@ class _ArticlePageState extends State<ArticlePage> {
     return Html(
       data: widget.article.summaryContent,
       extensions: extensions,
-      style: {'html': htmlStyle, 'body': bodyStyle},
+      style: {'a': aStyle, 'body': bodyStyle},
     );
   }
 
