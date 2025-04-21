@@ -83,7 +83,7 @@ class _FeedPageState extends State<FeedPage> {
 
   Widget? _buildSeparator(BuildContext context, int index) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Divider(color: Theme.of(context).colorScheme.surfaceContainerHigh),
     );
   }

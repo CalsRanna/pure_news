@@ -28,6 +28,18 @@ class _ArticlePageState extends State<ArticlePage> {
     return time.toString().substring(0, 19);
   }
 
+  Widget blockquoteBuilder(String? text) {
+    if (text == null) return const SizedBox();
+    var colorScheme = Theme.of(context).colorScheme;
+    var onSurface = colorScheme.onSurface.withValues(alpha: 0.5);
+    var border = Border(left: BorderSide(color: onSurface, width: 4));
+    return Container(
+      decoration: BoxDecoration(border: border),
+      padding: EdgeInsets.only(left: 12),
+      child: Text(text, style: TextStyle(color: onSurface)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var children = [
@@ -71,9 +83,13 @@ class _ArticlePageState extends State<ArticlePage> {
       padding: HtmlPaddings.symmetric(horizontal: 16),
       margin: Margins.zero,
     );
+    var extensions = [
+      ImageExtension(builder: _imageBuilder),
+      _BlockquoteExtension(builder: blockquoteBuilder),
+    ];
     return Html(
       data: widget.article.summaryContent,
-      extensions: [ImageExtension(builder: _imageBuilder)],
+      extensions: extensions,
       style: {'html': htmlStyle, 'body': bodyStyle},
     );
   }
@@ -104,20 +120,27 @@ class _ArticlePageState extends State<ArticlePage> {
   Widget _imageBuilder(context) {
     var src = context.attributes['src'] ?? '';
     if (src.trim().isEmpty) return const SizedBox();
-    var alt = context.attributes['alt'] ?? '';
     var placeholder = ImagePlaceholder(height: 300, width: double.infinity);
-    var image = CachedNetworkImage(
+    return CachedNetworkImage(
       errorWidget: (context, url, error) => placeholder,
       fit: BoxFit.cover,
       imageUrl: src,
       placeholder: (context, url) => placeholder,
       width: double.infinity,
     );
-    var children = [
-      image,
-      if (alt.trim().isNotEmpty) const SizedBox(height: 4),
-      if (alt.trim().isNotEmpty) Text(alt),
-    ];
-    return Column(children: children);
+  }
+}
+
+class _BlockquoteExtension extends HtmlExtension {
+  Widget Function(String?)? builder;
+  _BlockquoteExtension({this.builder});
+
+  @override
+  Set<String> get supportedTags => {'blockquote'};
+
+  @override
+  InlineSpan build(ExtensionContext context) {
+    var child = builder?.call(context.element?.text);
+    return WidgetSpan(child: child ?? const SizedBox());
   }
 }

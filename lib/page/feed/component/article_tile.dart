@@ -5,7 +5,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:pure_news/database/article.dart';
 import 'package:pure_news/database/subscription.dart';
 
-class ArticleTile extends StatefulWidget {
+class ArticleTile extends StatelessWidget {
   final Article article;
   final void Function()? onTap;
   final Subscription? subscription;
@@ -16,18 +16,13 @@ class ArticleTile extends StatefulWidget {
     this.subscription,
   });
 
-  @override
-  State<ArticleTile> createState() => _ArticleTileState();
-}
-
-class _ArticleTileState extends State<ArticleTile> {
   String get _host {
-    var uri = Uri.tryParse(widget.article.originHtmlUrl);
-    return uri?.host ?? 'widget.article.originHtmlUrl';
+    var uri = Uri.tryParse(article.originHtmlUrl);
+    return uri?.host ?? 'article.originHtmlUrl';
   }
 
   String get _timeAgo {
-    var published = widget.article.published;
+    var published = article.published;
     var time = DateTime.fromMillisecondsSinceEpoch(published * 1000);
     var now = DateTime.now();
     var diff = now.difference(time);
@@ -54,7 +49,7 @@ class _ArticleTileState extends State<ArticleTile> {
     );
     var feedInformationChildren = [
       Text(
-        widget.subscription?.title ?? widget.article.originTitle,
+        subscription?.title ?? article.originTitle,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: titleTextStyle,
@@ -66,7 +61,7 @@ class _ArticleTileState extends State<ArticleTile> {
       children: feedInformationChildren,
     );
     var articleInformationChildren = [
-      _buildSubscriptionIcon(),
+      _buildSubscriptionIcon(context),
       const SizedBox(width: 4),
       Expanded(child: feedInformation),
       const SizedBox(width: 4),
@@ -78,12 +73,12 @@ class _ArticleTileState extends State<ArticleTile> {
     );
     var articleContent = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [Expanded(child: _buildContent()), _buildCover()],
+      children: [Expanded(child: _buildContent()), _buildCover(context)],
     );
     var children = [
       articleInformation,
       SizedBox(height: 4),
-      Text(widget.article.title, style: titleTextStyle),
+      Text(article.title, style: titleTextStyle),
       SizedBox(height: 4),
       articleContent,
     ];
@@ -91,25 +86,19 @@ class _ArticleTileState extends State<ArticleTile> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     );
-    var boxDecoration = BoxDecoration(
-      borderRadius: BorderRadius.circular(8),
-      // color: Theme.of(context).colorScheme.surfaceContainerHigh,
-    );
-    var container = Container(
-      decoration: boxDecoration,
-      margin: EdgeInsets.symmetric(horizontal: 16),
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    var padding = Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: column,
     );
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: widget.onTap,
-      child: container,
+      onTap: onTap,
+      child: padding,
     );
   }
 
   Widget _buildContent() {
-    var document = parse(widget.article.summaryContent);
+    var document = parse(article.summaryContent);
     return Text(
       document.body?.text.trim() ?? '',
       maxLines: 5,
@@ -117,8 +106,8 @@ class _ArticleTileState extends State<ArticleTile> {
     );
   }
 
-  Widget _buildCover() {
-    var document = parse(widget.article.summaryContent);
+  Widget _buildCover(BuildContext context) {
+    var document = parse(article.summaryContent);
     var imageElement = document.querySelector('img');
     var src = imageElement?.attributes['src'] ?? '';
     var href = imageElement?.attributes['href'] ?? '';
@@ -152,7 +141,7 @@ class _ArticleTileState extends State<ArticleTile> {
     );
   }
 
-  ClipOval _buildSubscriptionIcon() {
+  ClipOval _buildSubscriptionIcon(BuildContext context) {
     var icon = Icon(
       HugeIcons.strokeRoundedRss,
       size: 20,
@@ -165,7 +154,7 @@ class _ArticleTileState extends State<ArticleTile> {
       child: icon,
     );
     var cachedNetworkImage = CachedNetworkImage(
-      imageUrl: (widget.subscription?.iconUrl ?? '').replaceAll(
+      imageUrl: (subscription?.iconUrl ?? '').replaceAll(
         '43.139.61.244',
         '43.139.61.244:8080',
       ),
