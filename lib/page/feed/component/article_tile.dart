@@ -99,11 +99,11 @@ class ArticleTile extends StatelessWidget {
 
   Widget _buildContent() {
     var document = parse(article.summaryContent);
-    return Text(
-      document.body?.text.trim() ?? '',
-      maxLines: 5,
-      overflow: TextOverflow.ellipsis,
-    );
+    var content = document.body?.text.trim() ?? '';
+    var formattedContent = content.replaceAll('\n', ' ');
+    formattedContent = formattedContent.replaceAll(' ', '');
+    formattedContent = formattedContent.replaceAll('\u3000', '');
+    return Text(formattedContent, maxLines: 5, overflow: TextOverflow.ellipsis);
   }
 
   Widget _buildCover(BuildContext context) {
@@ -154,10 +154,7 @@ class ArticleTile extends StatelessWidget {
       child: icon,
     );
     var cachedNetworkImage = CachedNetworkImage(
-      imageUrl: (subscription?.iconUrl ?? '').replaceAll(
-        '43.139.61.244',
-        '43.139.61.244:8080',
-      ),
+      imageUrl: subscription?.iconUrl ?? '',
       fit: BoxFit.cover,
       height: 40,
       width: 40,
