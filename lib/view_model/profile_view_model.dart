@@ -7,11 +7,15 @@ import 'package:signals/signals_flutter.dart';
 
 class ProfileViewModel extends ViewModel {
   final _feedViewModel = GetIt.instance<FeedViewModel>();
-  List<Subscription> get subscriptions => _feedViewModel.subscriptions.value;
-
   var endpoint = signal('');
   var password = signal('');
   var username = signal('');
+
+  String get formattedPassword {
+    return password.value.split('').map((_) => '*').join();
+  }
+
+  List<Subscription> get subscriptions => _feedViewModel.subscriptions.value;
 
   Future<void> init() async {
     endpoint.value = await SharedPreferencesUtil.getEndpoint();

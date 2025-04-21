@@ -16,11 +16,31 @@ class _ProfilePageState extends State<ProfilePage> {
   final viewModel = GetIt.instance<ProfileViewModel>();
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await viewModel.init();
-    });
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('个人设置')),
+      body: Watch((context) {
+        var wrap = Wrap(
+          alignment: WrapAlignment.start,
+          spacing: 8,
+          children: _buildChildren(),
+        );
+        var children = [
+          _ListTile(title: '服务器订阅地址', trailing: viewModel.endpoint.value),
+          _ListTile(title: '用户名', trailing: viewModel.username.value),
+          _ListTile(title: '密码', trailing: viewModel.formattedPassword),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Divider(height: 1),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SizedBox(width: double.infinity, child: wrap),
+          ),
+        ];
+        return Column(children: children);
+      }),
+    );
   }
 
   @override
@@ -30,54 +50,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Watch(
-        (context) => Column(
-          children: [
-            ListTile(
-              title: Row(
-                children: [
-                  Text('服务器订阅地址'),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      viewModel.endpoint.value,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: Text('Username'),
-              trailing: Text(viewModel.username.value),
-            ),
-            ListTile(
-              title: Text('Password'),
-              trailing: Text(viewModel.password.value),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Divider(height: 1),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: 8,
-                  children: _buildChildren(),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await viewModel.init();
+    });
   }
 
   List<Widget> _buildChildren() {
@@ -87,5 +64,27 @@ class _ProfilePageState extends State<ProfilePage> {
       children.add(Chip(label: Text(subscription.title)));
     }
     return children;
+  }
+}
+
+class _ListTile extends StatelessWidget {
+  final String title;
+  final String trailing;
+  const _ListTile({required this.title, required this.trailing});
+
+  @override
+  Widget build(BuildContext context) {
+    var trailingText = Text(
+      trailing,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.end,
+    );
+    var children = [
+      Text(title),
+      const SizedBox(width: 16),
+      Expanded(child: trailingText),
+    ];
+    return ListTile(title: Row(children: children));
   }
 }
